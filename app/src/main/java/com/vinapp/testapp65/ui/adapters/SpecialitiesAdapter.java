@@ -11,17 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vinapp.testapp65.R;
-import com.vinapp.testapp65.logic.Specialization;
+import com.vinapp.testapp65.logic.data.Specialty;
 
 import java.util.ArrayList;
 
-public class SpecializationsAdapter extends RecyclerView.Adapter<SpecializationsAdapter.SpecializationsViewHolder> {
+public class SpecialitiesAdapter extends RecyclerView.Adapter<SpecialitiesAdapter.SpecializationsViewHolder> {
 
     private LayoutInflater inflater;
-    private ArrayList<Specialization> specializations;
+    private ArrayList<Specialty> specialities;
 
-    public SpecializationsAdapter(Context context, ArrayList<Specialization> specializations) {
-        this.specializations = specializations;
+    public SpecialitiesAdapter(Context context, ArrayList<Specialty> specialities) {
+        this.specialities = specialities;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -34,8 +34,8 @@ public class SpecializationsAdapter extends RecyclerView.Adapter<Specializations
 
     @Override
     public void onBindViewHolder(@NonNull SpecializationsViewHolder holder, final int position) {
-        Specialization specialization = specializations.get(position);
-        holder.specNameTextView.setText(specialization.getName());
+        Specialty specialty = specialities.get(position);
+        holder.specNameTextView.setText(specialty.getName());
         holder.specNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +46,7 @@ public class SpecializationsAdapter extends RecyclerView.Adapter<Specializations
 
     @Override
     public int getItemCount() {
-        return specializations.size();
+        return specialities.size();
     }
 
     public class SpecializationsViewHolder extends RecyclerView.ViewHolder{

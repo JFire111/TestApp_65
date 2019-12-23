@@ -50,18 +50,19 @@ public class DataLoader {
     }
 
     private void loadSpecialties(JSONObject jsonObject) {
-        Set<Specialty> specialtyList = new HashSet<>();
+        ArrayList<Specialty> specialtyList = new ArrayList<>();
+        Set<String> specialtyNamesSet = new HashSet<>();
         JSONArray dataJSON;
         try {
             dataJSON = jsonObject.getJSONArray("response");
             for (int i = 0; i < dataJSON.length(); i++) {
                 JSONArray specialtiesJSON = dataJSON.getJSONObject(i).getJSONArray("specialty");
                 for (int j = 0; j < specialtiesJSON.length(); j++) {
-                    Specialty specialty = new Specialty();
-                    specialty.setId(specialtiesJSON.getJSONObject(j).getInt("specialty_id"));
-                    specialty.setName(specialtiesJSON.getJSONObject(j).getString("name"));
-                    if (specialtyList.contains(specialty.getId())) {
-                    } else {
+                    String specialtyName = specialtiesJSON.getJSONObject(j).getString("name");
+                    if (specialtyNamesSet.add(specialtyName)) {
+                        Specialty specialty = new Specialty();
+                        specialty.setId(specialtiesJSON.getJSONObject(j).getInt("specialty_id"));
+                        specialty.setName(specialtyName);
                         specialtyList.add(specialty);
                     }
                 }
@@ -69,15 +70,11 @@ public class DataLoader {
         } catch (Exception exc){
             exc.printStackTrace();
         }
-        for (int i = 0; i < specialtyList.size(); i++) {
-            Log.e("specs", specialtyList.size() + "");
-        }
-        //this.specialties = specialtyList;
+        this.specialties = specialtyList;
     }
 
     private void loadWorkers(JSONObject jsonObject) {
         ArrayList<Worker> workersList = new ArrayList<>();
-        ArrayList<Specialty> specialtiesList = new ArrayList<>();
         JSONArray dataJSON;
         try {
             dataJSON = jsonObject.getJSONArray("response");

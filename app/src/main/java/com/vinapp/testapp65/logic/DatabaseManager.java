@@ -87,18 +87,21 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 specialty.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
                 specialty.setName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIALTY_NAME)));
                 worker.setSpecialty(specialty);
-                Log.e("DB", worker.getFirstName() + " " + worker.getLastName() + " " + worker.getBirthday() + " " + worker.getSpecialty().getName());
+                workers.add(worker);
             } while (cursor.moveToNext());
+        }
+        for (int i = 0; i < workers.size(); i++) {
+            Log.e("DB_WORKERS", workers.get(i).getFirstName() + " " + workers.get(i).getLastName() + " " + workers.get(i).getBirthday() + " " + workers.get(i).getSpecialty().getName());
         }
         cursor.close();
         return workers;
     }
 
-    public void addSepcialty(Specialty specialty) {
+    public void addSpecialty(Specialty specialty) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SPECIALTIES
                 + " WHERE " + COLUMN_ID + " = " + specialty.getId()
-                + " AND " + COLUMN_SPECIALTY_NAME + " = " + specialty.getName(), null);
+                + " AND " + COLUMN_SPECIALTY_NAME + " = '" + specialty.getName() + "'", null);
         if (cursor.getCount() == 0) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(COLUMN_ID, specialty.getId());
@@ -118,8 +121,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 Specialty specialty = new Specialty();
                 specialty.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
                 specialty.setName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIALTY_NAME)));
-
+                specialties.add(specialty);
             } while (cursor.moveToNext());
+        }
+        for (int i = 0; i < specialties.size(); i++) {
+            Log.e("DB_SPECIALTIES", specialties.get(i).getId() + " " + specialties.get(i).getName());
         }
         cursor.close();
         return specialties;

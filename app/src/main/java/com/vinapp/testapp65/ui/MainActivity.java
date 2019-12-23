@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         AsyncTask asyncTask = new AsyncTask() {
             DataLoader dataLoader = new DataLoader();
             DatabaseManager databaseManager = new DatabaseManager(MainActivity.this);

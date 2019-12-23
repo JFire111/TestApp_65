@@ -5,7 +5,7 @@ public class Worker {
     private String firstName;
     private String lastName;
     private String birthday;
-    private String specialty;
+    private Specialty specialty;
     private int age;
 
     public void setFirstName(String firstName) {
@@ -20,7 +20,7 @@ public class Worker {
         this.birthday = birthday;
     }
 
-    public void setSpecialty(String specialty) {
+    public void setSpecialty(Specialty specialty) {
         this.specialty = specialty;
     }
 
@@ -40,7 +40,7 @@ public class Worker {
         return birthday;
     }
 
-    public String getSpecialty() {
+    public Specialty getSpecialty() {
         return specialty;
     }
 

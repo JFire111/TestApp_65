@@ -1,5 +1,7 @@
 package com.vinapp.testapp65.logic;
 
+import android.util.Log;
+
 import com.vinapp.testapp65.logic.data.Specialty;
 import com.vinapp.testapp65.logic.data.Worker;
 
@@ -10,16 +12,23 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class DataLoader {
 
-    private ArrayList<Specialty> specialties = new ArrayList<>();
-    private ArrayList<Worker> workers = new ArrayList<>();
+    private ArrayList<Specialty> specialties;
+    private ArrayList<Worker> workers;
     private JSONObject responseJSON;
 
-    public JSONObject requestToServer(String requestUrl) {
+    public void loadData(String url) {
+        loadWorkers(requestToServer(url));
+        loadSpecialties(requestToServer(url));
+    }
+
+    private JSONObject requestToServer(String requestUrl) {
         StringBuffer response = new StringBuffer();
         String line;
         try {
@@ -40,19 +49,57 @@ public class DataLoader {
         return responseJSON;
     }
 
-    private void setSpecialties(JSONObject jsonObject) {
-        Specialty specialty = new Specialty();
-        JSONArray specialtyJSON;
+    private void loadSpecialties(JSONObject jsonObject) {
+        Set<Specialty> specialtyList = new HashSet<>();
+        JSONArray dataJSON;
         try {
-            specialtyJSON = jsonObject.getJSONArray("specialty");
-            //specialty.setId(specialtyJSON.getJSONObject());
+            dataJSON = jsonObject.getJSONArray("response");
+            for (int i = 0; i < dataJSON.length(); i++) {
+                JSONArray specialtiesJSON = dataJSON.getJSONObject(i).getJSONArray("specialty");
+                for (int j = 0; j < specialtiesJSON.length(); j++) {
+                    Specialty specialty = new Specialty();
+                    specialty.setId(specialtiesJSON.getJSONObject(j).getInt("specialty_id"));
+                    specialty.setName(specialtiesJSON.getJSONObject(j).getString("name"));
+                    if (specialtyList.contains(specialty.getId())) {
+                    } else {
+                        specialtyList.add(specialty);
+                    }
+                }
+            }
         } catch (Exception exc){
             exc.printStackTrace();
         }
+        for (int i = 0; i < specialtyList.size(); i++) {
+            Log.e("specs", specialtyList.size() + "");
+        }
+        //this.specialties = specialtyList;
     }
 
-    private void setWorkers(JSONObject jsonObject) {
-
+    private void loadWorkers(JSONObject jsonObject) {
+        ArrayList<Worker> workersList = new ArrayList<>();
+        ArrayList<Specialty> specialtiesList = new ArrayList<>();
+        JSONArray dataJSON;
+        try {
+            dataJSON = jsonObject.getJSONArray("response");
+            for (int i = 0; i < dataJSON.length(); i++) {
+                JSONObject workerJSON = dataJSON.getJSONObject(i);
+                JSONArray specialtiesJSON = workerJSON.getJSONArray("specialty");
+                for (int j = 0; j < specialtiesJSON.length(); j++) {
+                    Worker worker = new Worker();
+                    Specialty specialty = new Specialty();
+                    specialty.setName(specialtiesJSON.getJSONObject(j).getString("name"));
+                    specialty.setId(specialtiesJSON.getJSONObject(j).getInt("specialty_id"));
+                    worker.setFirstName(workerJSON.getString("f_name"));
+                    worker.setLastName(workerJSON.getString("l_name"));
+                    worker.setBirthday(workerJSON.getString("birthday"));
+                    worker.setSpecialty(specialty);
+                    workersList.add(worker);
+                }
+            }
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        this.workers = workersList;
     }
 
     public ArrayList<Specialty> getSpecialties() {

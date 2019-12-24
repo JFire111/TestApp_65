@@ -90,6 +90,7 @@ public class DataLoader {
                     worker.setLastName(workerJSON.getString("l_name"));
                     worker.setBirthday(workerJSON.getString("birthday"));
                     worker.setSpecialty(specialty);
+                    worker.setAvatarUrl(workerJSON.getString("avatr_url"));
                     workersList.add(worker);
                 }
             }

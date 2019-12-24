@@ -56,6 +56,7 @@ public class WorkersAdapter extends RecyclerView.Adapter<WorkersAdapter.WorkersV
             public void onClick(View v) {
                 WorkerDataFragment workerDataFragment = new WorkerDataFragment(worker);
                 FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.replace(R.id.mainLayout, workerDataFragment);
                 ft.addToBackStack(null);
                 ft.commit();

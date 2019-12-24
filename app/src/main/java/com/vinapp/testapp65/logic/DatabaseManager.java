@@ -27,6 +27,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String COLUMN_BIRTHDAY = "BIRTHDAY";
     private static final String COLUMN_AGE = "AGE";
     private static final String COLUMN_SPECIALTY_NAME = "SPECIALTY_NAME";
+    private static final String COLUMN_AVATAR_URL = "AVATAR_URL";
 
     public DatabaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,7 +40,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_FIRST_NAME + " TEXT," + COLUMN_LAST_NAME + " TEXT,"
                 + COLUMN_BIRTHDAY + " NUMERIC," + COLUMN_AGE + " INTEGER,"
-                + COLUMN_SPECIALTY_NAME + " TEXT)");
+                + COLUMN_SPECIALTY_NAME + " TEXT," + COLUMN_AVATAR_URL + " TEXT)");
         //Create table of specialties
         db.execSQL("CREATE TABLE " + TABLE_SPECIALTIES + "(" + COLUMN_ID
                 + " INTEGER," + COLUMN_SPECIALTY_NAME + " TEXT)");
@@ -76,7 +77,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         ArrayList<Worker> workers = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String orderBy = COLUMN_FIRST_NAME;
-        String[] columns = {COLUMN_ID, COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_BIRTHDAY, COLUMN_SPECIALTY_NAME, COLUMN_AGE};
+        String[] columns = {COLUMN_ID, COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_BIRTHDAY, COLUMN_SPECIALTY_NAME, COLUMN_AGE, COLUMN_AVATAR_URL};
         Cursor cursor = db.query(TABLE_WORKERS, columns, null, null, null, null, orderBy);
         if (cursor.moveToFirst()) {
             do {
@@ -88,6 +89,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 specialty.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
                 specialty.setName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIALTY_NAME)));
                 worker.setSpecialty(specialty);
+                worker.setAvatarUrl(cursor.getString(cursor.getColumnIndex(COLUMN_AVATAR_URL)));
                 workers.add(worker);
             } while (cursor.moveToNext());
         }
@@ -101,7 +103,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public ArrayList<Worker> getWorkersBySpecialty(String specialtyName) {
         ArrayList<Worker> workers = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {COLUMN_ID, COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_BIRTHDAY, COLUMN_SPECIALTY_NAME, COLUMN_AGE};
+        String[] columns = {COLUMN_ID, COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_BIRTHDAY, COLUMN_SPECIALTY_NAME, COLUMN_AGE, COLUMN_AVATAR_URL};
         String selection = COLUMN_SPECIALTY_NAME + " = ?";
         String[] selectionArgs = {specialtyName};
         String orderBy = COLUMN_FIRST_NAME;
@@ -116,6 +118,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 specialty.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
                 specialty.setName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIALTY_NAME)));
                 worker.setSpecialty(specialty);
+                worker.setAvatarUrl(cursor.getString(cursor.getColumnIndex(COLUMN_AVATAR_URL)));
                 workers.add(worker);
             } while (cursor.moveToNext());
         }

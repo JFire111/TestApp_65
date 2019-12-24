@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final DatabaseManager databaseManager = new DatabaseManager(MainActivity.this);
         specialitiesFragment = new SpecialitiesFragment();
 
         AsyncTask asyncTask = new AsyncTask() {
             DataLoader dataLoader = new DataLoader();
-            DatabaseManager databaseManager = new DatabaseManager(MainActivity.this);
             @Override
             protected Object doInBackground(Object[] objects) {
                 dataLoader.loadData(DATA_URL);
@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                databaseManager.getWorkersBySpecialty("Менеджер");
-                databaseManager.getAllSpecialties();
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.add(R.id.mainLayout, specialitiesFragment);
                 fragmentTransaction.commit();

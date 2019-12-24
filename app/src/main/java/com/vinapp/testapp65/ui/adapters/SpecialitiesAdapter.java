@@ -59,6 +59,7 @@ public class SpecialitiesAdapter extends RecyclerView.Adapter<SpecialitiesAdapte
                 Log.e("-------------", "Click " + position);
                 WorkersListFragment workersListFragment = new WorkersListFragment(specialty.getName());
                 FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.replace(R.id.mainLayout, workersListFragment);
                 ft.addToBackStack(null);
                 ft.commit();

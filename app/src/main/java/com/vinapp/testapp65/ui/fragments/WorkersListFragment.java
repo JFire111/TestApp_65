@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +24,6 @@ public class WorkersListFragment extends Fragment {
     private String specialty;
     private RecyclerView recyclerView;
     private WorkersAdapter adapter;
-
     public WorkersListFragment(String specialtyName) {
         this.specialty = specialtyName;
     }

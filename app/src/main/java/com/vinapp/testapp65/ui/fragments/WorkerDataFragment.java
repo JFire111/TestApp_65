@@ -15,11 +15,12 @@ import com.vinapp.testapp65.logic.data.Worker;
 
 public class WorkerDataFragment extends Fragment {
 
-    Worker worker;
-    TextView nameTextView;
-    TextView birthdayTextView;
-    TextView specialtyTextView;
-    TextView ageTextView;
+    private Worker worker;
+    private TextView nameTextView;
+    private TextView birthdayTextView;
+    private TextView specialtyTextView;
+    private TextView ageTextView;
+
 
     public WorkerDataFragment(Worker worker) {
         this.worker = worker;

@@ -75,8 +75,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public ArrayList<Worker> getAllWorkers() {
         ArrayList<Worker> workers = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+        String orderBy = COLUMN_FIRST_NAME;
         String[] columns = {COLUMN_ID, COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_BIRTHDAY, COLUMN_SPECIALTY_NAME, COLUMN_AGE};
-        Cursor cursor = db.query(TABLE_WORKERS, columns, null, null, null, null, null);
+        Cursor cursor = db.query(TABLE_WORKERS, columns, null, null, null, null, orderBy);
         if (cursor.moveToFirst()) {
             do {
                 Worker worker = new Worker();
@@ -94,6 +95,33 @@ public class DatabaseManager extends SQLiteOpenHelper {
             Log.e("DB_WORKERS", workers.get(i).getFirstName() + " " + workers.get(i).getLastName() + " " + workers.get(i).getBirthday() + " " + workers.get(i).getSpecialty().getName());
         }
         cursor.close();
+        return workers;
+    }
+
+    public ArrayList<Worker> getWorkersBySpecialty(String specialtyName) {
+        ArrayList<Worker> workers = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {COLUMN_ID, COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_BIRTHDAY, COLUMN_SPECIALTY_NAME, COLUMN_AGE};
+        String selection = COLUMN_SPECIALTY_NAME + " = ?";
+        String[] selectionArgs = {specialtyName};
+        String orderBy = COLUMN_FIRST_NAME;
+        Cursor cursor = db.query(TABLE_WORKERS, columns, selection, selectionArgs, null, null, orderBy);
+        if (cursor.moveToFirst()) {
+            do {
+                Worker worker = new Worker();
+                worker.setFirstName(cursor.getString(cursor.getColumnIndex(COLUMN_FIRST_NAME)));
+                worker.setLastName(cursor.getString(cursor.getColumnIndex(COLUMN_LAST_NAME)));
+                worker.setBirthday(cursor.getString(cursor.getColumnIndex(COLUMN_BIRTHDAY)));
+                Specialty specialty = new Specialty();
+                specialty.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+                specialty.setName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIALTY_NAME)));
+                worker.setSpecialty(specialty);
+                workers.add(worker);
+            } while (cursor.moveToNext());
+        }
+        for (int i = 0; i < workers.size(); i++) {
+            Log.e("DB_WORKERS", workers.get(i).getFirstName() + " " + workers.get(i).getLastName() + " " + workers.get(i).getBirthday() + " " + workers.get(i).getSpecialty().getName());
+        }
         return workers;
     }
 
@@ -115,7 +143,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         ArrayList<Specialty> specialties = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {COLUMN_ID, COLUMN_SPECIALTY_NAME};
-        Cursor cursor = db.query(TABLE_SPECIALTIES, columns, null, null, null, null, null);
+        String orderBy = COLUMN_SPECIALTY_NAME;
+        Cursor cursor = db.query(TABLE_SPECIALTIES, columns, null, null, null, null, orderBy);
         if (cursor.moveToFirst()) {
             do {
                 Specialty specialty = new Specialty();

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,9 +33,11 @@ public class SpecialitiesAdapter extends RecyclerView.Adapter<SpecialitiesAdapte
 
     public class SpecializationsViewHolder extends RecyclerView.ViewHolder{
         final TextView specialtyNameTextView;
+        final CardView specialtyCard;
         public SpecializationsViewHolder(@NonNull View itemView) {
             super(itemView);
             specialtyNameTextView = (TextView) itemView.findViewById(R.id.specialtyNameTextView);
+            specialtyCard = (CardView) itemView.findViewById(R.id.specialtyCard);
         }
     }
 
@@ -50,13 +53,14 @@ public class SpecialitiesAdapter extends RecyclerView.Adapter<SpecialitiesAdapte
         final Specialty specialty = specialities.get(position);
         holder.specialtyNameTextView.setText(specialty.getName());
         // TODO: replace clickListener???
-        holder.specialtyNameTextView.setOnClickListener(new View.OnClickListener() {
+        holder.specialtyCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e("-------------", "Click " + position);
                 WorkersListFragment workersListFragment = new WorkersListFragment(specialty.getName());
                 FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.mainLayout, workersListFragment);
+                ft.addToBackStack(null);
                 ft.commit();
             }
         });

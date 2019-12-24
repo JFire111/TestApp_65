@@ -9,11 +9,11 @@ public class Worker {
     private int age;
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = formatString(firstName);
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = formatString(lastName);
     }
 
     public void setBirthday(String birthday) {
@@ -46,5 +46,11 @@ public class Worker {
 
     public int getAge() {
         return age;
+    }
+
+    private String formatString(String string) {
+        string = string.trim();
+        string = string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
+        return string;
     }
 }

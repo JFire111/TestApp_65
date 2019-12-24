@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,9 +32,11 @@ public class WorkersAdapter extends RecyclerView.Adapter<WorkersAdapter.WorkersV
 
     public class WorkersViewHolder extends RecyclerView.ViewHolder {
         final TextView workerTextView;
+        final CardView workerCard;
         public WorkersViewHolder(@NonNull View itemView) {
             super(itemView);
-            workerTextView = (TextView) itemView.findViewById(R.id.workerTextView);
+            workerTextView = (TextView) itemView.findViewById(R.id.workerNameTextView);
+            workerCard = (CardView) itemView.findViewById(R.id.workerCard);
         }
     }
 
@@ -48,12 +51,13 @@ public class WorkersAdapter extends RecyclerView.Adapter<WorkersAdapter.WorkersV
     public void onBindViewHolder(@NonNull WorkersViewHolder holder, int position) {
         final Worker worker = workers.get(position);
         holder.workerTextView.setText(worker.getFirstName() + " " + worker.getLastName());
-        holder.workerTextView.setOnClickListener(new View.OnClickListener() {
+        holder.workerCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 WorkerDataFragment workerDataFragment = new WorkerDataFragment(worker);
                 FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.mainLayout, workerDataFragment);
+                ft.addToBackStack(null);
                 ft.commit();
             }
         });

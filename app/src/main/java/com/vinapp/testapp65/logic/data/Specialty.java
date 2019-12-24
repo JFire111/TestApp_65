@@ -10,7 +10,7 @@ public class Specialty {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = formatString(name);
     }
 
     public int getId() {
@@ -19,5 +19,11 @@ public class Specialty {
 
     public String getName() {
         return name;
+    }
+
+    private String formatString(String string) {
+        string = string.trim();
+        string = string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
+        return string;
     }
 }

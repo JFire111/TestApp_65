@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Worker> workers;
     private ArrayList<Specialty> specialties;
     private SpecialitiesFragment specialitiesFragment;
-    private WorkersListFragment workersListFragment;
     private FragmentTransaction fragmentTransaction;
 
     @Override
@@ -33,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         specialitiesFragment = new SpecialitiesFragment();
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.mainLayout, specialitiesFragment);
-        fragmentTransaction.commit();
 
         AsyncTask asyncTask = new AsyncTask() {
             DataLoader dataLoader = new DataLoader();
@@ -59,12 +55,11 @@ public class MainActivity extends AppCompatActivity {
                 super.onPostExecute(o);
                 databaseManager.getWorkersBySpecialty("Менеджер");
                 databaseManager.getAllSpecialties();
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.add(R.id.mainLayout, specialitiesFragment);
+                fragmentTransaction.commit();
             }
         };
         asyncTask.execute();
-    }
-
-    public void qwe() {
-        fragmentTransaction.replace(R.id.mainLayout, workersListFragment);
     }
 }

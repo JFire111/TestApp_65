@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vinapp.testapp65.R;
 import com.vinapp.testapp65.logic.DatabaseManager;
-import com.vinapp.testapp65.logic.data.Specialty;
 import com.vinapp.testapp65.logic.data.Worker;
 import com.vinapp.testapp65.ui.adapters.WorkersAdapter;
 

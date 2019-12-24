@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/specNameTextView"
+            android:id="@+id/specialtyNameTextView"
             android:layout_width="300dp"
             android:layout_height="30dp"
             tools:text="Specialty" />

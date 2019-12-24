@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vinapp.testapp65.R;
 import com.vinapp.testapp65.logic.data.Worker;
+import com.vinapp.testapp65.ui.fragments.WorkerDataFragment;
 
 import java.util.ArrayList;
 
@@ -18,10 +21,12 @@ public class WorkersAdapter extends RecyclerView.Adapter<WorkersAdapter.WorkersV
 
     private LayoutInflater inflater;
     private ArrayList<Worker> workers;
+    private FragmentActivity activity;
 
-    public WorkersAdapter(Context context, ArrayList<Worker> workers) {
+    public WorkersAdapter(Context context, ArrayList<Worker> workers, FragmentActivity activity) {
         this.workers = workers;
         this.inflater = LayoutInflater.from(context);
+        this.activity = activity;
     }
 
     public class WorkersViewHolder extends RecyclerView.ViewHolder {
@@ -41,8 +46,17 @@ public class WorkersAdapter extends RecyclerView.Adapter<WorkersAdapter.WorkersV
 
     @Override
     public void onBindViewHolder(@NonNull WorkersViewHolder holder, int position) {
-        Worker worker = workers.get(position);
+        final Worker worker = workers.get(position);
         holder.workerTextView.setText(worker.getFirstName() + " " + worker.getLastName());
+        holder.workerTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WorkerDataFragment workerDataFragment = new WorkerDataFragment(worker);
+                FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.mainLayout, workerDataFragment);
+                ft.commit();
+            }
+        });
     }
 
     @Override

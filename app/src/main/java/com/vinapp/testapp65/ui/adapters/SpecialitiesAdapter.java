@@ -31,10 +31,10 @@ public class SpecialitiesAdapter extends RecyclerView.Adapter<SpecialitiesAdapte
     }
 
     public class SpecializationsViewHolder extends RecyclerView.ViewHolder{
-        final TextView specNameTextView;
+        final TextView specialtyNameTextView;
         public SpecializationsViewHolder(@NonNull View itemView) {
             super(itemView);
-            specNameTextView = (TextView) itemView.findViewById(R.id.specNameTextView);
+            specialtyNameTextView = (TextView) itemView.findViewById(R.id.specialtyNameTextView);
         }
     }
 
@@ -47,15 +47,15 @@ public class SpecialitiesAdapter extends RecyclerView.Adapter<SpecialitiesAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final SpecializationsViewHolder holder, final int position) {
-        Specialty specialty = specialities.get(position);
-        holder.specNameTextView.setText(specialty.getName());
+        final Specialty specialty = specialities.get(position);
+        holder.specialtyNameTextView.setText(specialty.getName());
         // TODO: replace clickListener???
-        holder.specNameTextView.setOnClickListener(new View.OnClickListener() {
+        holder.specialtyNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e("-------------", "Click " + position);
+                WorkersListFragment workersListFragment = new WorkersListFragment(specialty.getName());
                 FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-                WorkersListFragment workersListFragment = new WorkersListFragment(holder.specNameTextView.getText().toString());
                 ft.replace(R.id.mainLayout, workersListFragment);
                 ft.commit();
             }

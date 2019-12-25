@@ -30,7 +30,7 @@ public class WorkerDataFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_worker_data, container, false);
 
-        nameTextView = view.findViewById(R.id.workerNameTextView);
+        nameTextView = view.findViewById(R.id.workerItemNameTextView);
         birthdayTextView = view.findViewById(R.id.workerBirthdayTextView);
         specialtyTextView = view.findViewById(R.id.workerSpecialtyTextView);
         ageTextView = view.findViewById(R.id.workerAgeTextView);
@@ -38,6 +38,11 @@ public class WorkerDataFragment extends Fragment {
         nameTextView.setText(worker.getFirstName() + " " + worker.getLastName());
         birthdayTextView.setText(worker.getBirthday());
         specialtyTextView.setText(worker.getSpecialty().getName());
+        if (worker.getAge() != null) {
+            ageTextView.setText(String.valueOf(worker.getAge()));
+        } else {
+            ageTextView.setText("-");
+        }
 
         return view;
     }

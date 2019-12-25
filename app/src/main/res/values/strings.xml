@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">TestApp65</string>
+
+    <string name="worker_item_age">Возраст:</string>
+
+    <string name="worker_data_specialty">Специальность:</string>
+    <string name="worker_data_birthday">Дата рождения:</string>
+    <string name="worker_data_age">Возраст:</string>
 </resources>

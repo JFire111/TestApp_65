@@ -19,19 +19,39 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/workerNameTextView"
+                android:id="@+id/workerItemNameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 tools:text="Fname Lname" />
 
-            <TextView
-                android:id="@+id/workerAgeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                tools:text="30" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/workerItemAgeTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_weight="0"
+                    android:text="@string/worker_item_age"
+                    android:textSize="18sp"
+                    tools:text="Age:" />
+
+                <TextView
+                    android:id="@+id/workerItemAgeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="18sp"
+                    tools:text="30" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

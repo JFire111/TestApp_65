@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:textSize="18sp"
+            android:textStyle="bold"
             tools:text="Specialty" />
     </androidx.cardview.widget.CardView>
 

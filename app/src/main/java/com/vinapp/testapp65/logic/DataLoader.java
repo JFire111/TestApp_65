@@ -47,11 +47,6 @@ public class DataLoader extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-    }
-
     private JSONObject requestToServer(String requestUrl) {
         StringBuffer response = new StringBuffer();
         String line;

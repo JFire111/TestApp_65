@@ -32,10 +32,12 @@ public class WorkersAdapter extends RecyclerView.Adapter<WorkersAdapter.WorkersV
 
     public class WorkersViewHolder extends RecyclerView.ViewHolder {
         final TextView workerTextView;
+        final TextView workerAgeTextView;
         final CardView workerCard;
         public WorkersViewHolder(@NonNull View itemView) {
             super(itemView);
-            workerTextView = (TextView) itemView.findViewById(R.id.workerNameTextView);
+            workerTextView = (TextView) itemView.findViewById(R.id.workerItemNameTextView);
+            workerAgeTextView = (TextView) itemView.findViewById(R.id.workerItemAgeTextView);
             workerCard = (CardView) itemView.findViewById(R.id.workerCard);
         }
     }
@@ -51,6 +53,11 @@ public class WorkersAdapter extends RecyclerView.Adapter<WorkersAdapter.WorkersV
     public void onBindViewHolder(@NonNull WorkersViewHolder holder, int position) {
         final Worker worker = workers.get(position);
         holder.workerTextView.setText(worker.getFirstName() + " " + worker.getLastName());
+        if (worker.getAge() != null) {
+            holder.workerAgeTextView.setText(String.valueOf(worker.getAge()));
+        } else {
+            holder.workerAgeTextView.setText("-");
+        }
         holder.workerCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

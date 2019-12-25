@@ -1,5 +1,6 @@
 package com.vinapp.testapp65.logic.data;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -11,15 +12,16 @@ public class Worker {
     private String lastName;
     private String birthday;
     private Specialty specialty;
-    private int age;
+    private Integer age;
     private String avatarUrl;
+    private BitmapDrawable avatar;
 
     public void setFirstName(String firstName) {
-        this.firstName = formatString(firstName);
+        this.firstName = formatNameString(firstName);
     }
 
     public void setLastName(String lastName) {
-        this.lastName = formatString(lastName);
+        this.lastName = formatNameString(lastName);
     }
 
     public void setBirthday(String birthday) {
@@ -45,6 +47,7 @@ public class Worker {
             }
         }
         this.birthday = birthday;
+        calculateAge(birthday);
     }
 
 
@@ -52,12 +55,37 @@ public class Worker {
         this.specialty = specialty;
     }
 
-    public void setAge(int age) {
+    private void calculateAge(String birthday) {
+        Integer age;
+        String dateFormat = "dd.MM.yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+        SimpleDateFormat year = new SimpleDateFormat("yyyy");
+        SimpleDateFormat month = new SimpleDateFormat("MM");
+        try {
+            Date currentDate = new Date();
+            Date birthdayDate = simpleDateFormat.parse(birthday);
+            age = Integer.valueOf(year.format(currentDate)) - Integer.valueOf(year.format(birthdayDate));
+            if (Integer.valueOf(month.format(currentDate)) < Integer.valueOf(month.format(birthdayDate))) {
+                age = age - 1;
+            }
+            if (Integer.valueOf(month.format(currentDate)) == Integer.valueOf(month.format(birthdayDate))) {
+                SimpleDateFormat day = new SimpleDateFormat("dd");
+                if (Integer.valueOf(day.format(currentDate)) < Integer.valueOf(day.format(birthdayDate))) {
+                    age = age - 1;
+                }
+            }
+        } catch (Exception exc) {
+            age = null;
+        }
         this.age = age;
     }
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public void setAvatar(BitmapDrawable avatar) {
+        this.avatar = avatar;
     }
 
     public String getFirstName() {
@@ -76,7 +104,8 @@ public class Worker {
         return specialty;
     }
 
-    public int getAge() {
+    public Integer getAge() {
+
         return age;
     }
 
@@ -84,7 +113,11 @@ public class Worker {
         return avatarUrl;
     }
 
-    private String formatString(String string) {
+    public BitmapDrawable getAvatar() {
+        return avatar;
+    }
+
+    private String formatNameString(String string) {
         string = string.trim();
         string = string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
         return string;

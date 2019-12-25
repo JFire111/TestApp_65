@@ -1,5 +1,7 @@
 package com.vinapp.testapp65.logic;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.vinapp.testapp65.logic.data.Specialty;
@@ -17,16 +19,37 @@ import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class DataLoader {
+public class DataLoader extends AsyncTask<Void, Void, Void> {
+
+    private final String DATA_URL = "https://gitlab.65apps.com/65gb/static/raw/master/testTask.json";
 
     private ArrayList<Specialty> specialties;
     private ArrayList<Worker> workers;
-    
+    private Context context;
+
     private JSONObject responseJSON;
 
-    public void loadData(String url) {
-        loadWorkers(requestToServer(url));
-        loadSpecialties(requestToServer(url));
+    public DataLoader(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    protected Void doInBackground(Void... voids) {
+        DatabaseManager databaseManager = new DatabaseManager(context);
+        loadWorkers(requestToServer(DATA_URL));
+        loadSpecialties(requestToServer(DATA_URL));
+        for (int i = 0; i < workers.size(); i++) {
+            databaseManager.addWorker(workers.get(i));
+        }
+        for (int i = 0; i < specialties.size(); i++) {
+            databaseManager.addSpecialty(specialties.get(i));
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
     }
 
     private JSONObject requestToServer(String requestUrl) {
@@ -99,13 +122,5 @@ public class DataLoader {
             exc.printStackTrace();
         }
         this.workers = workersList;
-    }
-
-    public ArrayList<Specialty> getSpecialties() {
-        return specialties;
-    }
-
-    public ArrayList<Worker> getWorkers() {
-        return workers;
     }
 }

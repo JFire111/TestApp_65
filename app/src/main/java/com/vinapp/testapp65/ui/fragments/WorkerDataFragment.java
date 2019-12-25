@@ -21,7 +21,6 @@ public class WorkerDataFragment extends Fragment {
     private TextView specialtyTextView;
     private TextView ageTextView;
 
-
     public WorkerDataFragment(Worker worker) {
         this.worker = worker;
     }

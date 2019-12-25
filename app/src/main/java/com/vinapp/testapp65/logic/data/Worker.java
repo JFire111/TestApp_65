@@ -3,6 +3,8 @@ package com.vinapp.testapp65.logic.data;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,7 +16,7 @@ public class Worker {
     private Specialty specialty;
     private Integer age;
     private String avatarUrl;
-    private BitmapDrawable avatar;
+    private BitmapDrawable avatar = new BitmapDrawable();
 
     public void setFirstName(String firstName) {
         this.firstName = formatNameString(firstName);
@@ -84,7 +86,7 @@ public class Worker {
         this.avatarUrl = avatarUrl;
     }
 
-    public void setAvatar(BitmapDrawable avatar) {
+    public void setAvatar(@Nullable BitmapDrawable avatar) {
         this.avatar = avatar;
     }
 

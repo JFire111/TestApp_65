@@ -65,8 +65,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
             contentValues.put(COLUMN_BIRTHDAY, worker.getBirthday());
             contentValues.put(COLUMN_SPECIALTY_NAME, worker.getSpecialty().getName());
             contentValues.put(COLUMN_AGE, worker.getAge());
+            contentValues.put(COLUMN_AVATAR_URL, worker.getAvatarUrl());
             db.insert(TABLE_WORKERS, null, contentValues);
         }
+        cursor.close();
         db.close();
     }
 
@@ -89,6 +91,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             Log.e("DB_WORKERS", workers.get(i).getFirstName() + " " + workers.get(i).getLastName() + " " + workers.get(i).getBirthday() + " " + workers.get(i).getSpecialty().getName());
         }
         cursor.close();
+        db.close();
         return workers;
     }
 
@@ -112,6 +115,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         for (int i = 0; i < workers.size(); i++) {
             Log.e("DB_WORKERS", workers.get(i).getFirstName() + " " + workers.get(i).getLastName() + " " + workers.get(i).getBirthday() + " " + workers.get(i).getSpecialty().getName());
         }
+        cursor.close();
+        db.close();
         return workers;
     }
 
@@ -140,6 +145,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             contentValues.put(COLUMN_SPECIALTY_NAME, specialty.getName());
             db.insert(TABLE_SPECIALTIES, null, contentValues);
         }
+        cursor.close();
         db.close();
     }
 
@@ -162,6 +168,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             Log.e("DB_SPECIALTIES", specialties.get(i).getId() + " " + specialties.get(i).getName());
         }
         cursor.close();
+        db.close();
         return specialties;
     }
 

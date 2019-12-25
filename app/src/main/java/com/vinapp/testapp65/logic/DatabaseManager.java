@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import com.vinapp.testapp65.logic.data.Specialty;
 import com.vinapp.testapp65.logic.data.Worker;
 
@@ -55,11 +53,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     public void addWorker(Worker worker) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_WORKERS
-                + " WHERE " + COLUMN_FIRST_NAME + " = '" + worker.getFirstName()
-                + "' AND " + COLUMN_LAST_NAME + " = '" + worker.getLastName()
-                + "' AND " + COLUMN_BIRTHDAY + " = '" + worker.getBirthday()
-                + "' AND " + COLUMN_SPECIALTY_NAME + " = '" + worker.getSpecialty().getName() + "'", null);
+        String[] columns = {COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_BIRTHDAY, COLUMN_SPECIALTY_NAME};
+        String selection = COLUMN_FIRST_NAME + " = ? AND " + COLUMN_LAST_NAME + " = ? AND " + COLUMN_BIRTHDAY + " = ? AND " + COLUMN_SPECIALTY_NAME + " = ?";
+        String[] selectionArgs = {worker.getFirstName(), worker.getLastName(), worker.getBirthday(), worker.getSpecialty().getName()};
+        Cursor cursor = db.query(TABLE_WORKERS, columns, selection, selectionArgs, null, null, null);
         Log.e("LOG", cursor.getCount() + " ");
         if (cursor.getCount() == 0) {
             ContentValues contentValues = new ContentValues();
@@ -81,16 +78,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_WORKERS, columns, null, null, null, null, orderBy);
         if (cursor.moveToFirst()) {
             do {
-                Worker worker = new Worker();
-                worker.setFirstName(cursor.getString(cursor.getColumnIndex(COLUMN_FIRST_NAME)));
-                worker.setLastName(cursor.getString(cursor.getColumnIndex(COLUMN_LAST_NAME)));
-                worker.setBirthday(cursor.getString(cursor.getColumnIndex(COLUMN_BIRTHDAY)));
-                Specialty specialty = new Specialty();
-                specialty.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
-                specialty.setName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIALTY_NAME)));
-                worker.setSpecialty(specialty);
-                worker.setAvatarUrl(cursor.getString(cursor.getColumnIndex(COLUMN_AVATAR_URL)));
-                workers.add(worker);
+                try {
+                    workers.add(getWorker(cursor));
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
             } while (cursor.moveToNext());
         }
         for (int i = 0; i < workers.size(); i++) {
@@ -110,16 +102,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_WORKERS, columns, selection, selectionArgs, null, null, orderBy);
         if (cursor.moveToFirst()) {
             do {
-                Worker worker = new Worker();
-                worker.setFirstName(cursor.getString(cursor.getColumnIndex(COLUMN_FIRST_NAME)));
-                worker.setLastName(cursor.getString(cursor.getColumnIndex(COLUMN_LAST_NAME)));
-                worker.setBirthday(cursor.getString(cursor.getColumnIndex(COLUMN_BIRTHDAY)));
-                Specialty specialty = new Specialty();
-                specialty.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
-                specialty.setName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIALTY_NAME)));
-                worker.setSpecialty(specialty);
-                worker.setAvatarUrl(cursor.getString(cursor.getColumnIndex(COLUMN_AVATAR_URL)));
-                workers.add(worker);
+                try {
+                    workers.add(getWorker(cursor));
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
             } while (cursor.moveToNext());
         }
         for (int i = 0; i < workers.size(); i++) {
@@ -128,11 +115,25 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return workers;
     }
 
+    public Worker getWorker(Cursor cursor) throws Exception {
+        Worker worker = new Worker();
+        worker.setFirstName(cursor.getString(cursor.getColumnIndex(COLUMN_FIRST_NAME)));
+        worker.setLastName(cursor.getString(cursor.getColumnIndex(COLUMN_LAST_NAME)));
+        worker.setBirthday(cursor.getString(cursor.getColumnIndex(COLUMN_BIRTHDAY)));
+        Specialty specialty = new Specialty();
+        specialty.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+        specialty.setName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIALTY_NAME)));
+        worker.setSpecialty(specialty);
+        worker.setAvatarUrl(cursor.getString(cursor.getColumnIndex(COLUMN_AVATAR_URL)));
+        return worker;
+    }
+
     public void addSpecialty(Specialty specialty) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SPECIALTIES
-                + " WHERE " + COLUMN_ID + " = " + specialty.getId()
-                + " AND " + COLUMN_SPECIALTY_NAME + " = '" + specialty.getName() + "'", null);
+        String[] columns = {COLUMN_ID, COLUMN_SPECIALTY_NAME};
+        String selection = COLUMN_ID + " = ? AND " + COLUMN_SPECIALTY_NAME + " = ?";
+        String[] selectionArgs = {String.valueOf(specialty.getId()), specialty.getName()};
+        Cursor cursor = db.query(TABLE_SPECIALTIES, columns, selection, selectionArgs, null, null, null);
         if (cursor.getCount() == 0) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(COLUMN_ID, specialty.getId());
@@ -150,10 +151,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_SPECIALTIES, columns, null, null, null, null, orderBy);
         if (cursor.moveToFirst()) {
             do {
-                Specialty specialty = new Specialty();
-                specialty.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
-                specialty.setName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIALTY_NAME)));
-                specialties.add(specialty);
+                try {
+                    specialties.add(getSpecialty(cursor));
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
             } while (cursor.moveToNext());
         }
         for (int i = 0; i < specialties.size(); i++) {
@@ -161,5 +163,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
         cursor.close();
         return specialties;
+    }
+
+    public Specialty getSpecialty(Cursor cursor) throws Exception {
+        Specialty specialty = new Specialty();
+        specialty.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+        specialty.setName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIALTY_NAME)));
+        return specialty;
     }
 }

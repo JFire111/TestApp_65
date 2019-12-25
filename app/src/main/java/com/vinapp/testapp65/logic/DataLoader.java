@@ -21,6 +21,7 @@ public class DataLoader {
 
     private ArrayList<Specialty> specialties;
     private ArrayList<Worker> workers;
+    
     private JSONObject responseJSON;
 
     public void loadData(String url) {

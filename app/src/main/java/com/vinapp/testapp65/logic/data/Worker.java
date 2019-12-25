@@ -24,27 +24,29 @@ public class Worker {
 
     public void setBirthday(String birthday) {
         birthday = birthday.replace('-', '.');
-        if (birthday.isEmpty() || birthday.equals("null") || birthday == null) {
-            this.birthday = "-";
-        } else {
-            String wrongPattern = "yyyy.MM.dd";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(wrongPattern);
-            simpleDateFormat.setLenient(false);
-            try {
-                Log.e("DATE", birthday);
-                if (simpleDateFormat.parse(birthday) != null) {
-                    Log.e("DATE----", birthday);
-                    String correctPattern = "dd.MM.yyyy";
-                    Date date = simpleDateFormat.parse(birthday);
-                    simpleDateFormat.applyPattern(correctPattern);
-                    birthday = simpleDateFormat.format(date);
-                }
-            } catch (Exception exc) {
-                Log.e("EXC", exc.toString());
+        String wrongPattern = "yyyy.MM.dd";
+        String correctPattern = "dd.MM.yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(wrongPattern);
+        simpleDateFormat.setLenient(false);
+        try {
+            Log.e("DATE", birthday);
+            if (simpleDateFormat.parse(birthday) != null) {
+                Log.e("DATE----", birthday);
+                Date date = simpleDateFormat.parse(birthday);
+                simpleDateFormat.applyPattern(correctPattern);
+                birthday = simpleDateFormat.format(date);
             }
-            this.birthday = birthday;
+        } catch (Exception exc) {
+            try {
+                simpleDateFormat.applyPattern(correctPattern);
+                simpleDateFormat.parse(birthday);
+            } catch (Exception e) {
+                birthday = "-";
+            }
         }
+        this.birthday = birthday;
     }
+
 
     public void setSpecialty(Specialty specialty) {
         this.specialty = specialty;

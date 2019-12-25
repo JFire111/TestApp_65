@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vinapp.testapp65.R;
 import com.vinapp.testapp65.logic.data.Worker;
 import com.vinapp.testapp65.ui.fragments.WorkerDataFragment;
+import com.vinapp.testapp65.ui.fragments.interfaces.OnWorkersListFragmentListener;
 
 import java.util.ArrayList;
 
@@ -22,12 +23,13 @@ public class WorkersAdapter extends RecyclerView.Adapter<WorkersAdapter.WorkersV
 
     private LayoutInflater inflater;
     private ArrayList<Worker> workers;
-    private FragmentActivity activity;
 
-    public WorkersAdapter(Context context, ArrayList<Worker> workers, FragmentActivity activity) {
+    private OnWorkersListFragmentListener fragmentListener;
+
+    public WorkersAdapter(Context context, ArrayList<Worker> workers) {
         this.workers = workers;
         this.inflater = LayoutInflater.from(context);
-        this.activity = activity;
+        this.fragmentListener = (OnWorkersListFragmentListener) context;
     }
 
     public class WorkersViewHolder extends RecyclerView.ViewHolder {
@@ -61,12 +63,7 @@ public class WorkersAdapter extends RecyclerView.Adapter<WorkersAdapter.WorkersV
         holder.workerCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WorkerDataFragment workerDataFragment = new WorkerDataFragment(worker);
-                FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.replace(R.id.mainLayout, workerDataFragment);
-                ft.addToBackStack(null);
-                ft.commit();
+                fragmentListener.openWorkerDataFragment(worker);
             }
         });
     }

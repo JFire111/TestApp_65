@@ -2,6 +2,7 @@ package com.vinapp.testapp65.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.AsyncTask;
@@ -13,14 +14,20 @@ import com.vinapp.testapp65.logic.DatabaseManager;
 import com.vinapp.testapp65.logic.data.Specialty;
 import com.vinapp.testapp65.logic.data.Worker;
 import com.vinapp.testapp65.ui.fragments.SpecialitiesFragment;
+import com.vinapp.testapp65.ui.fragments.WorkerDataFragment;
 import com.vinapp.testapp65.ui.fragments.WorkersListFragment;
+import com.vinapp.testapp65.ui.fragments.interfaces.OnSpecialitiesFragmentListener;
+import com.vinapp.testapp65.ui.fragments.interfaces.OnWorkersListFragmentListener;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnSpecialitiesFragmentListener, OnWorkersListFragmentListener {
 
     private SpecialitiesFragment specialitiesFragment;
-    private FragmentTransaction fragmentTransaction;
+    private FragmentManager fragmentManager;
+    private WorkersListFragment workersListFragment;
+    private WorkerDataFragment workerDataFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,16 +35,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         specialitiesFragment = new SpecialitiesFragment();
+        fragmentManager = getSupportFragmentManager();
 
         DataLoader dataLoader = new DataLoader(this);
         dataLoader.execute();
         try {
             dataLoader.get();
-            fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.mainLayout, specialitiesFragment);
-            fragmentTransaction.commit();
+            fragmentManager.beginTransaction().add(R.id.mainLayout, specialitiesFragment).commit();
         } catch (Exception exc) {
             exc.printStackTrace();
         }
+    }
+
+    @Override
+    public void openWorkersListFragment(Specialty specialty) {
+        workersListFragment = new WorkersListFragment(specialty.getName());
+        fragmentManager.beginTransaction().replace(R.id.mainLayout, workersListFragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void openWorkerDataFragment(Worker worker) {
+        workerDataFragment = new WorkerDataFragment(worker);
+        fragmentManager.beginTransaction().replace(R.id.mainLayout, workerDataFragment).addToBackStack(null).commit();
+
     }
 }

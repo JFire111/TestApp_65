@@ -31,7 +31,7 @@ public class SpecialitiesFragment extends Fragment {
         DatabaseManager databaseManager = new DatabaseManager(getContext());
         specialities = databaseManager.getAllSpecialties();
 
-        adapter = new SpecialitiesAdapter(getContext(), specialities, getActivity());
+        adapter = new SpecialitiesAdapter(getContext(), specialities);
         recyclerView = view.findViewById(R.id.specializationsRecyclerView);
         recyclerView.setAdapter(adapter);
 

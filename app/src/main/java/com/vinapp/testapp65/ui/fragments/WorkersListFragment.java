@@ -23,6 +23,7 @@ public class WorkersListFragment extends Fragment {
     private String specialty;
     private RecyclerView recyclerView;
     private WorkersAdapter adapter;
+
     public WorkersListFragment(String specialtyName) {
         this.specialty = specialtyName;
     }
@@ -35,7 +36,7 @@ public class WorkersListFragment extends Fragment {
         DatabaseManager databaseManager = new DatabaseManager(getContext());
         workers = databaseManager.getWorkersBySpecialty(specialty);
 
-        adapter = new WorkersAdapter(getContext(), workers, getActivity());
+        adapter = new WorkersAdapter(getContext(), workers);
         recyclerView = view.findViewById(R.id.workersRecyclerView);
         recyclerView.setAdapter(adapter);
 

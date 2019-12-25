@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vinapp.testapp65.R;
 import com.vinapp.testapp65.logic.data.Specialty;
 import com.vinapp.testapp65.ui.fragments.WorkersListFragment;
+import com.vinapp.testapp65.ui.fragments.interfaces.OnSpecialitiesFragmentListener;
 
 import java.util.ArrayList;
 
@@ -23,12 +24,13 @@ public class SpecialitiesAdapter extends RecyclerView.Adapter<SpecialitiesAdapte
 
     private LayoutInflater inflater;
     private ArrayList<Specialty> specialities;
-    private FragmentActivity activity;
 
-    public SpecialitiesAdapter(Context context, ArrayList<Specialty> specialities, FragmentActivity activity) {
+    private OnSpecialitiesFragmentListener fragmentListener;
+
+    public SpecialitiesAdapter(Context context, ArrayList<Specialty> specialities) {
         this.specialities = specialities;
         this.inflater = LayoutInflater.from(context);
-        this.activity = activity;
+        this.fragmentListener = (OnSpecialitiesFragmentListener) context;
     }
 
     public class SpecializationsViewHolder extends RecyclerView.ViewHolder{
@@ -57,12 +59,7 @@ public class SpecialitiesAdapter extends RecyclerView.Adapter<SpecialitiesAdapte
             @Override
             public void onClick(View v) {
                 Log.e("-------------", "Click " + position);
-                WorkersListFragment workersListFragment = new WorkersListFragment(specialty.getName());
-                FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.replace(R.id.mainLayout, workersListFragment);
-                ft.addToBackStack(null);
-                ft.commit();
+                fragmentListener.openWorkersListFragment(specialty);
             }
         });
     }

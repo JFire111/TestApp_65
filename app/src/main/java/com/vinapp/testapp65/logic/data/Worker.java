@@ -16,7 +16,6 @@ public class Worker {
     private Specialty specialty;
     private Integer age;
     private String avatarUrl;
-    private BitmapDrawable avatar = new BitmapDrawable();
 
     public void setFirstName(String firstName) {
         this.firstName = formatNameString(firstName);
@@ -86,10 +85,6 @@ public class Worker {
         this.avatarUrl = avatarUrl;
     }
 
-    public void setAvatar(@Nullable BitmapDrawable avatar) {
-        this.avatar = avatar;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -113,10 +108,6 @@ public class Worker {
 
     public String getAvatarUrl() {
         return avatarUrl;
-    }
-
-    public BitmapDrawable getAvatar() {
-        return avatar;
     }
 
     private String formatNameString(String string) {

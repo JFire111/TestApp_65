@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
-import android.widget.ProgressBar;
 
 import com.vinapp.testapp65.R;
 import com.vinapp.testapp65.logic.DataLoader;
@@ -24,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements OnSpecialitiesFra
     private WorkersListFragment workersListFragment;
     private WorkerDataFragment workerDataFragment;
     private ActionBar actionBar;
-    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements OnSpecialitiesFra
 
         fragmentManager = getSupportFragmentManager();
         actionBar = getSupportActionBar();
-        progressBar = findViewById(R.id.progressBar);
 
         if (savedInstanceState == null) {
             DataLoader dataLoader = new DataLoader(this);

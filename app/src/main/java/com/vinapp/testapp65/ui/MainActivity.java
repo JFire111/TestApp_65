@@ -1,17 +1,13 @@
 package com.vinapp.testapp65.ui;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.vinapp.testapp65.R;
 import com.vinapp.testapp65.logic.DataLoader;
-import com.vinapp.testapp65.logic.DatabaseManager;
 import com.vinapp.testapp65.logic.data.Specialty;
 import com.vinapp.testapp65.logic.data.Worker;
 import com.vinapp.testapp65.ui.fragments.SpecialitiesFragment;
@@ -20,14 +16,13 @@ import com.vinapp.testapp65.ui.fragments.WorkersListFragment;
 import com.vinapp.testapp65.ui.fragments.interfaces.OnSpecialitiesFragmentListener;
 import com.vinapp.testapp65.ui.fragments.interfaces.OnWorkersListFragmentListener;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity implements OnSpecialitiesFragmentListener, OnWorkersListFragmentListener {
 
     private SpecialitiesFragment specialitiesFragment;
     private FragmentManager fragmentManager;
     private WorkersListFragment workersListFragment;
     private WorkerDataFragment workerDataFragment;
+    private ActionBar actionBar;
 
 
     @Override
@@ -36,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements OnSpecialitiesFra
         setContentView(R.layout.activity_main);
 
         fragmentManager = getSupportFragmentManager();
+        actionBar = getSupportActionBar();
 
         if (savedInstanceState == null) {
             DataLoader dataLoader = new DataLoader(this);
@@ -43,7 +39,8 @@ public class MainActivity extends AppCompatActivity implements OnSpecialitiesFra
             try {
                 dataLoader.get();
                 specialitiesFragment = new SpecialitiesFragment();
-                fragmentManager.beginTransaction().add(R.id.mainLayout, specialitiesFragment).commit();
+                actionBar.setTitle(R.string.title_specialties);
+                fragmentManager.beginTransaction().add(R.id.fragmentContainer, specialitiesFragment).commit();
             } catch (Exception exc) {
                 exc.printStackTrace();
             }
@@ -53,13 +50,38 @@ public class MainActivity extends AppCompatActivity implements OnSpecialitiesFra
     @Override
     public void openWorkersListFragment(Specialty specialty) {
         workersListFragment = new WorkersListFragment(specialty.getName());
-        fragmentManager.beginTransaction().replace(R.id.mainLayout, workersListFragment).addToBackStack(null).commit();
+        switch (specialty.getId()) {
+            case 101:
+                actionBar.setTitle(R.string.title_managers);
+                break;
+            case 102:
+                actionBar.setTitle(R.string.title_developers);
+                break;
+            default:
+                actionBar.setTitle(R.string.title_workers);
+                break;
+        }
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, workersListFragment).addToBackStack(null).commit();
     }
 
     @Override
     public void openWorkerDataFragment(Worker worker) {
         workerDataFragment = new WorkerDataFragment(worker);
-        fragmentManager.beginTransaction().replace(R.id.mainLayout, workerDataFragment).addToBackStack(null).commit();
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, workerDataFragment).addToBackStack(null).commit();
+        actionBar.hide();
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        int check = fragmentManager.getBackStackEntryCount();
+        switch (check) {
+            case 0:
+                actionBar.setTitle(R.string.title_specialties);
+                break;
+            case 1:
+                actionBar.show();
+                break;
+        }
     }
 }

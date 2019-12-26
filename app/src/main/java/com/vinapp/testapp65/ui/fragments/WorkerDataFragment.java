@@ -27,6 +27,7 @@ public class WorkerDataFragment extends Fragment {
 
     public WorkerDataFragment(Worker worker) {
         this.worker = worker;
+        this.setRetainInstance(true);
     }
 
     @Nullable

@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.vinapp.testapp65.R;
 import com.vinapp.testapp65.logic.DataLoader;
@@ -34,16 +35,18 @@ public class MainActivity extends AppCompatActivity implements OnSpecialitiesFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        specialitiesFragment = new SpecialitiesFragment();
         fragmentManager = getSupportFragmentManager();
 
-        DataLoader dataLoader = new DataLoader(this);
-        dataLoader.execute();
-        try {
-            dataLoader.get();
-            fragmentManager.beginTransaction().add(R.id.mainLayout, specialitiesFragment).commit();
-        } catch (Exception exc) {
-            exc.printStackTrace();
+        if (savedInstanceState == null) {
+            DataLoader dataLoader = new DataLoader(this);
+            dataLoader.execute();
+            try {
+                dataLoader.get();
+                specialitiesFragment = new SpecialitiesFragment();
+                fragmentManager.beginTransaction().add(R.id.mainLayout, specialitiesFragment).commit();
+            } catch (Exception exc) {
+                exc.printStackTrace();
+            }
         }
     }
 

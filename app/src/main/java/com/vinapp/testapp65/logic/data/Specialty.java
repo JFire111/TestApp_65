@@ -21,6 +21,7 @@ public class Specialty {
         return name;
     }
 
+    //Форматируем строку, для отображения строки(названия специальности) с заглавной буквы
     private String formatString(String string) {
         string = string.trim();
         string = string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();

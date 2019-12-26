@@ -2,7 +2,6 @@ package com.vinapp.testapp65.logic;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.vinapp.testapp65.logic.data.Specialty;
 import com.vinapp.testapp65.logic.data.Worker;
@@ -19,8 +18,14 @@ import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 
+/**
+ * DataLoader
+ * Класс для загрузки данных с сервера
+ */
+
 public class DataLoader extends AsyncTask<Void, Void, Void> {
 
+    //Строка с json ответом
     private final String DATA_URL = "https://gitlab.65apps.com/65gb/static/raw/master/testTask.json";
 
     private ArrayList<Specialty> specialties;
@@ -36,6 +41,7 @@ public class DataLoader extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         DatabaseManager databaseManager = new DatabaseManager(context);
+        //Загружаем инфу о работниках и специальностях с сервера и добавляем её в БД
         loadWorkers(requestToServer(DATA_URL));
         loadSpecialties(requestToServer(DATA_URL));
         for (int i = 0; i < workers.size(); i++) {
@@ -56,6 +62,7 @@ public class DataLoader extends AsyncTask<Void, Void, Void> {
             connection.setRequestMethod("GET");
             connection.connect();
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            //Сохраняем JSON ответ от сервера
             while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
@@ -72,6 +79,7 @@ public class DataLoader extends AsyncTask<Void, Void, Void> {
         ArrayList<Specialty> specialtyList = new ArrayList<>();
         Set<String> specialtyNamesSet = new HashSet<>();
         JSONArray dataJSON;
+        //Разбираем JSON ответ и достаем из него список специальностей
         try {
             dataJSON = jsonObject.getJSONArray("response");
             for (int i = 0; i < dataJSON.length(); i++) {
@@ -95,6 +103,7 @@ public class DataLoader extends AsyncTask<Void, Void, Void> {
     private void loadWorkers(JSONObject jsonObject) {
         ArrayList<Worker> workersList = new ArrayList<>();
         JSONArray dataJSON;
+        //Разбираем JSON ответ и достаем из него список работников
         try {
             dataJSON = jsonObject.getJSONArray("response");
             for (int i = 0; i < dataJSON.length(); i++) {

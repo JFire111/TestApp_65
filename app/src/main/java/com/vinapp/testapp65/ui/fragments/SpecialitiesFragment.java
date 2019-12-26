@@ -1,6 +1,5 @@
 package com.vinapp.testapp65.ui.fragments;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vinapp.testapp65.R;
 import com.vinapp.testapp65.logic.DatabaseManager;
 import com.vinapp.testapp65.logic.data.Specialty;
-import com.vinapp.testapp65.ui.adapters.SpecialitiesAdapter;
+import com.vinapp.testapp65.ui.fragments.adapters.SpecialitiesAdapter;
 
 import java.util.ArrayList;
 

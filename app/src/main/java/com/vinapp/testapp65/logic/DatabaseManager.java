@@ -5,12 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.vinapp.testapp65.logic.data.Specialty;
 import com.vinapp.testapp65.logic.data.Worker;
 
 import java.util.ArrayList;
+
+/**
+ * DatabaseManager
+ * Класс для управления базой данных
+ * Все методы для обращения к БД объявлять здесь
+ */
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
@@ -33,13 +38,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //Create table of workers
+        //Создаем таблицу работников
         db.execSQL("CREATE TABLE " + TABLE_WORKERS + "(" + COLUMN_ID
                 + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_FIRST_NAME + " TEXT," + COLUMN_LAST_NAME + " TEXT,"
                 + COLUMN_BIRTHDAY + " NUMERIC," + COLUMN_AGE + " INTEGER,"
                 + COLUMN_SPECIALTY_NAME + " TEXT," + COLUMN_AVATAR_URL + " TEXT)");
-        //Create table of specialties
+        //Создаем таблицу специальностей
         db.execSQL("CREATE TABLE " + TABLE_SPECIALTIES + "(" + COLUMN_ID
                 + " INTEGER," + COLUMN_SPECIALTY_NAME + " TEXT)");
     }
@@ -51,13 +56,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    //Добавляем работника в базу данных
     public void addWorker(Worker worker) {
         SQLiteDatabase db = this.getWritableDatabase();
         String[] columns = {COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_BIRTHDAY, COLUMN_SPECIALTY_NAME};
         String selection = COLUMN_FIRST_NAME + " = ? AND " + COLUMN_LAST_NAME + " = ? AND " + COLUMN_BIRTHDAY + " = ? AND " + COLUMN_SPECIALTY_NAME + " = ?";
         String[] selectionArgs = {worker.getFirstName(), worker.getLastName(), worker.getBirthday(), worker.getSpecialty().getName()};
         Cursor cursor = db.query(TABLE_WORKERS, columns, selection, selectionArgs, null, null, null);
-        Log.e("LOG", cursor.getCount() + " ");
         if (cursor.getCount() == 0) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(COLUMN_FIRST_NAME, worker.getFirstName());
@@ -87,9 +92,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 }
             } while (cursor.moveToNext());
         }
-        for (int i = 0; i < workers.size(); i++) {
-            Log.e("DB_WORKERS", workers.get(i).getFirstName() + " " + workers.get(i).getLastName() + " " + workers.get(i).getBirthday() + " " + workers.get(i).getSpecialty().getName());
-        }
         cursor.close();
         db.close();
         return workers;
@@ -112,9 +114,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 }
             } while (cursor.moveToNext());
         }
-        for (int i = 0; i < workers.size(); i++) {
-            Log.e("DB_WORKERS", workers.get(i).getFirstName() + " " + workers.get(i).getLastName() + " " + workers.get(i).getBirthday() + " " + workers.get(i).getSpecialty().getName());
-        }
         cursor.close();
         db.close();
         return workers;
@@ -133,6 +132,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return worker;
     }
 
+    //Добавляем специальность в базу данных
     public void addSpecialty(Specialty specialty) {
         SQLiteDatabase db = this.getWritableDatabase();
         String[] columns = {COLUMN_ID, COLUMN_SPECIALTY_NAME};
@@ -163,9 +163,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     exc.printStackTrace();
                 }
             } while (cursor.moveToNext());
-        }
-        for (int i = 0; i < specialties.size(); i++) {
-            Log.e("DB_SPECIALTIES", specialties.get(i).getId() + " " + specialties.get(i).getName());
         }
         cursor.close();
         db.close();

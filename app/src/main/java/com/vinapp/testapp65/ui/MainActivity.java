@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.widget.ProgressBar;
 
 import com.vinapp.testapp65.R;
 import com.vinapp.testapp65.logic.DataLoader;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements OnSpecialitiesFra
     private WorkersListFragment workersListFragment;
     private WorkerDataFragment workerDataFragment;
     private ActionBar actionBar;
-
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements OnSpecialitiesFra
 
         fragmentManager = getSupportFragmentManager();
         actionBar = getSupportActionBar();
+        progressBar = findViewById(R.id.progressBar);
 
         if (savedInstanceState == null) {
             DataLoader dataLoader = new DataLoader(this);
@@ -47,9 +49,11 @@ public class MainActivity extends AppCompatActivity implements OnSpecialitiesFra
         }
     }
 
+    //Открытие фрагмента WorkersListFragment
     @Override
     public void openWorkersListFragment(Specialty specialty) {
         workersListFragment = new WorkersListFragment(specialty.getName());
+        //Устанавливаем название специальности в заголовке ActionBar во множественном числе в соответствии с ID специальности
         switch (specialty.getId()) {
             case 101:
                 actionBar.setTitle(R.string.title_managers);
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements OnSpecialitiesFra
         fragmentManager.beginTransaction().replace(R.id.fragmentContainer, workersListFragment).addToBackStack(null).commit();
     }
 
+    //Открытие фрагмента WorkerDataFragment
     @Override
     public void openWorkerDataFragment(Worker worker) {
         workerDataFragment = new WorkerDataFragment(worker);
@@ -74,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements OnSpecialitiesFra
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        //Обрабатываем нажатие кнопки назад, для изменения корректных значений в ActionBar при перезоде на предыдущий фрагмент
         int check = fragmentManager.getBackStackEntryCount();
         switch (check) {
             case 0:

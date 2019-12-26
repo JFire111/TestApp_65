@@ -1,4 +1,4 @@
-package com.vinapp.testapp65.ui.adapters;
+package com.vinapp.testapp65.ui.fragments.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,13 +8,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vinapp.testapp65.R;
 import com.vinapp.testapp65.logic.data.Worker;
-import com.vinapp.testapp65.ui.fragments.WorkerDataFragment;
 import com.vinapp.testapp65.ui.fragments.interfaces.OnWorkersListFragmentListener;
 
 import java.util.ArrayList;
@@ -36,6 +33,7 @@ public class WorkersAdapter extends RecyclerView.Adapter<WorkersAdapter.WorkersV
         final TextView workerTextView;
         final TextView workerAgeTextView;
         final CardView workerCard;
+        //Инициализируем объект(item) для RecyclerView с инфой о работнике
         public WorkersViewHolder(@NonNull View itemView) {
             super(itemView);
             workerTextView = (TextView) itemView.findViewById(R.id.workerItemNameTextView);
@@ -55,11 +53,13 @@ public class WorkersAdapter extends RecyclerView.Adapter<WorkersAdapter.WorkersV
     public void onBindViewHolder(@NonNull WorkersViewHolder holder, int position) {
         final Worker worker = workers.get(position);
         holder.workerTextView.setText(worker.getFirstName() + " " + worker.getLastName());
+        //Если возраст работника неизвестен ставим "-"
         if (worker.getAge() != null) {
             holder.workerAgeTextView.setText(String.valueOf(worker.getAge()));
         } else {
             holder.workerAgeTextView.setText("-");
         }
+        //Обрабатываем нажатие по карточке с работником
         holder.workerCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

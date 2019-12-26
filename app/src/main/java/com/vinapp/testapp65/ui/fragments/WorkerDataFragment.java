@@ -1,7 +1,6 @@
 package com.vinapp.testapp65.ui.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ public class WorkerDataFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_worker_data, container, false);
 
-
         nameTextView = view.findViewById(R.id.workerItemNameTextView);
         birthdayTextView = view.findViewById(R.id.workerBirthdayTextView);
         specialtyTextView = view.findViewById(R.id.workerSpecialtyTextView);
@@ -51,6 +49,8 @@ public class WorkerDataFragment extends Fragment {
             ageTextView.setText("-");
         }
 
+        //Загружаем фото работника
+        //Если фото не загрузилось, в т.ч. на фото нет ссылки, то ставим изображение-заглушку
         try {
             if (worker.getAvatarUrl().toLowerCase().trim().substring(0, 4).equals("http")) {
                 Picasso.get().load(worker.getAvatarUrl()).into(avatar);
